@@ -1,0 +1,288 @@
+@font-face{
+	font-family: 'myfont bold';
+	src:url('font/myriad-set-pro_semibold.woff');
+}
+@font-face{
+	font-family: 'myfont thin';
+	src:url('font/myriad-set-pro_thin.woff');
+}
+@font-face{
+	font-family: 'myfont text';
+	src:url('font/myriad-set-pro_text.woff');
+}
+body{
+	padding:0;
+	margin:0;
+	font-family: 'myfont bold';
+}
+ul,li{
+	list-style: none;
+	margin:0;
+	padding:0;
+}
+
+%clear{
+	clear:both;
+	content:'';
+	display: block;
+}
+%size{
+	width:100px;
+	height:100px;
+}
+
+section{
+	margin-top: 20px;
+}
+.content{
+	max-width: 980px;
+	min-height: 600px;
+	margin:0 auto;
+	box-shadow: 0 0 2px black;
+	box-sizing:border-box;
+	padding:30px 50px;
+	margin-top: 30px;
+}
+@mixin onsmall{
+	@media screen and(max-width: 750px){
+		@content;
+	}
+}
+h2{
+	border-bottom: 1px solid black;
+	margin:0;
+	padding:10px 0;
+	font-size: 24px;
+	@include onsmall{
+		font-size: 30px;
+	}
+}
+.description{
+	font-size: 20px;
+	font-family: 'myfont text';
+}
+.example{
+	margin-top: 20px;
+}
+#transition .test{
+	transition-property:left;
+	transition-duration:5s;
+	transition-timing-function:ease;
+	width:60px;
+	height:60px;
+	border-radius: 50%;
+	position: relative;
+	left:0;
+	top:0;
+	background: black;
+}
+#transition .da{
+	width:200px;
+	height:200px;
+	background:black;
+	position: relative;
+	&:hover .xiao{
+		left:50px;
+		top:50px;
+	};
+	&:hover + .test{
+        left:800px;
+	};
+	.xiao{
+		transition: all 0.8s ease;
+		@extend %size;
+		background: white;
+		position: absolute;
+		left:2px;
+		top:2px;
+	}
+}
+
+#transition .bottom{
+	position: absolute;
+	left:0;
+	bottom:0;
+	width:33%;
+	height:6px;
+	background: black;
+	border-right:2px solid black;
+	transition:left .3s ease;
+}
+
+#transition .nav{
+	ul{
+		width:100%;
+		height:auto;
+		position: relative;
+		&::after{
+			@extend %clear;
+		};
+	}
+	li{
+		float:left;
+		width:33%;
+		height:60px;
+		border:1px solid black;
+	}
+}
+
+#transition li:nth-child(1):hover ~ .bottom{
+    left:0;
+};
+#transition li:nth-child(2):hover ~ .bottom{
+    left:33.3%;
+};
+#transition li:nth-child(3):hover ~ .bottom{
+    left:66.5%;
+};
+
+#transition .delay{
+	@extend %size;
+	border:1px solid #fff;
+	.delay-xiao{
+		width:100%;
+		height:100%;
+		border:1px solid black;
+		transition:width .3s ease, width .3s ease, background .3s ease .3s;
+	}
+	&:hover .delay-xiao{
+		width:300px;
+		height:50px;
+		background:black;
+	};
+}
+
+#transition label{
+	cursor: pointer;
+}
+#transition .bg-list{
+	&::after{
+		@extend %clear;
+	};
+	li{
+		float:left;
+		width:100%;
+		height:30px;
+		border:1px solid black;
+		margin-bottom: 3px;
+		transition:background .5s ease;
+	}
+	@for $i from 1 through 3{
+		li:nth-child(#{$i}){
+			transition-delay: $i*0.1s ;
+		};	
+	}
+}
+
+#transition #list:checked + .bg-list li{
+	background: black;
+}
+
+#transform{
+	.rotate,.scale,.skew,.translate{
+		@extend %size;
+		background-image: linear-gradient(#000,#fff);
+		transition:transform .5s ease-in-out;
+		transform-origin: 50% 50%;
+	}
+	.rotate{
+		&:hover{
+            transform:rotateZ(145deg);
+		};
+	};
+	.scale{
+		transform-origin: top center;
+        &:hover{
+        	transform:scale(1.5,1.2);
+        };
+	}
+	.skew-inner{
+		@extend %size;
+        position: relative;
+        border:1px solid #000;
+        .shu{
+			position: absolute;
+			left:50px;
+			top:0;
+			width:1px;
+			height:100%;
+			background:#000;
+		}
+		.heng{
+			position: absolute;
+			left:0;
+			top:50px;
+			width:100%;
+			height:1px;
+			background:#000;
+		}
+	}
+	.skew{
+		.shu,.heng{
+			background: #fff;
+		}
+		&:hover{
+            transform:skew(30deg,45deg);
+		};
+	};
+	.translate{
+		&:hover{
+            transform:translateX(100px);
+		};
+	};
+}
+
+#animation{
+    .shan{
+		@extend %size;
+		background: black;
+	}
+	.tiao{
+		width:200px;
+		height:300px;
+		border:1px solid #000;
+		.cycle{
+			width:20px;
+			height:20px;
+			border-radius: 50%;
+			background: #000;
+			margin-left: 90px;
+			animation:tantiao 3s ease both infinite;
+		}
+	}
+}
+#animation label{
+	cursor: pointer;
+}
+#shanshuo:checked ~ .example .shan{
+	animation:shanshuo 3s ease;
+}
+@keyframes shanshuo{
+	0%,50%,100%{
+		opacity: 1;
+	}
+	25%,75%{
+		opacity: 0;
+	}
+}
+@keyframes tantiao{
+	0%{
+		animation-timing-function:cubic-bezier(.42,0,.58,1);
+		transform:translateY(0);
+	}
+	25%{
+		transform:translateY(300px-20px);
+	}
+	50%{
+		transform:translateY(75px);
+	}
+	75%{
+		transform:translateY(300px-20px);
+	}
+	90%{
+		transform:translateY(150px);
+	}
+	100%{
+		transform:translateY(300px-20px);
+	}
+}
